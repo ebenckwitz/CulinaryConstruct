@@ -119,7 +119,7 @@ public class ColorHelper {
     public ColorTransformer(int color, BakedQuad quad) {
       super(new BakedQuadBuilder(quad.getSprite()));
 
-      int a = (color >> 24);
+      int a = color >> 24; //*CODE STYLE* removed parentheses
 
       if (a == 0) {
         a = 255;
