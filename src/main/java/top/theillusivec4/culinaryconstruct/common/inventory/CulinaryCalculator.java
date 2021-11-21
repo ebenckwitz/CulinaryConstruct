@@ -54,8 +54,8 @@ public class CulinaryCalculator {
     this.liquidColors = new ArrayList<>();
   }
 
-  public ItemStack getResult() {
-    List<ItemStack> process = new ArrayList<>(this.ingredients);
+  public ItemStack getResult() { //*DESIGN* minimize nested if statements
+    final List<ItemStack> process = new ArrayList<>(this.ingredients); //*CODE STYLE* made variable final
     this.processed.clear();
     int maxFood;
 
@@ -75,20 +75,16 @@ public class CulinaryCalculator {
     }
 
     for (ItemStack stack : process) {
-      if (!stack.isEmpty()) {
-        if (!this.processStack(stack)) {
+      if (!stack.isEmpty() && (!this.processStack(stack))) { //*DESIGN* combine nested if statements
           return ItemStack.EMPTY;
         }
-      }
     }
 
-    if (type == OutputType.SANDWICH && !this.liquidColors.isEmpty()) {
+    if (type == OutputType.SANDWICH && !this.liquidColors.isEmpty()
+    		|| (this.saturation <= 0 || this.food <= 0)) { //fixed
       return ItemStack.EMPTY;
     }
 
-    if (this.saturation <= 0 || this.food <= 0) {
-      return ItemStack.EMPTY;
-    }
     this.saturation /= this.food;
     int count = 1;
 
@@ -118,9 +114,12 @@ public class CulinaryCalculator {
     return result;
   }
 
-  public boolean processStack(ItemStack stack) {
-    Item item = stack.getItem();
-    Food food = item.getFood();
+  public boolean processStack(final ItemStack stack) { //*CODE STYLE* make argument final
+    Item item; 
+    Food food; 
+    item = stack.getItem();
+    food = item.getFood(); //*DESIGN* separated variables 
+    
     LazyOptional<ICulinaryIngredient> culinary = CulinaryConstructApi.getCulinaryIngredient(stack);
     int foodAmount = 0;
     float saturationAmount = 0;
