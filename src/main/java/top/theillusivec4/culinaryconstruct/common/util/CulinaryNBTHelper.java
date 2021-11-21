@@ -30,6 +30,9 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 
 public class CulinaryNBTHelper {
+  private CulinaryNBTHelper() { //*DESIGN* added private constructor so object cannot be made
+	  
+  }
 
   public static final String TAG_BASE = "Base";
   public static final String TAG_INGREDIENTS = "Ingredients";
@@ -50,7 +53,7 @@ public class CulinaryNBTHelper {
     return ItemStack.read(compound.getCompound(TAG_BASE));
   }
 
-  public static int getQuality(ItemStack stack) {
+  public static int getQuality(final ItemStack stack) { //*CODE STYLE* made argument final
     CompoundNBT compound = getTagSafe(stack);
     return compound.getInt(TAG_QUALITY);
   }
@@ -72,7 +75,7 @@ public class CulinaryNBTHelper {
 
   public static NonNullList<ItemStack> getIngredientsList(ItemStack stack) {
     CompoundNBT compound = getTagSafe(stack);
-    CompoundNBT tag = compound.getCompound(TAG_INGREDIENTS);
+    final CompoundNBT tag = compound.getCompound(TAG_INGREDIENTS); //*CODE STYLE* made variable final
     NonNullList<ItemStack> list = NonNullList.withSize(getSize(stack), ItemStack.EMPTY);
     ItemStackHelper.loadAllItems(tag, list);
     return list;
