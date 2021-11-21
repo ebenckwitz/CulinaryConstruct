@@ -94,6 +94,10 @@ public class CulinaryConstruct {
 
   @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
   public static class ClientProxy {
+	  
+	private ClientProxy () { //*DESIGN* created private constructor so no object can be made
+		
+	}  
     
     @SubscribeEvent
     public static void registerModels(final ModelRegistryEvent evt) {
